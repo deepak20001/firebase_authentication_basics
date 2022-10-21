@@ -4,9 +4,14 @@ import '../ui/auth/login_screen.dart';
 
 class SplashServices {
   void isLogin(BuildContext context) {
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    });
+    Timer(
+      Duration(seconds: 3),
+      () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      ),
+    );
   }
 }

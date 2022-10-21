@@ -9,7 +9,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // accessing the
+  // accessing the periodic timer function 
   SplashServices splashScreen = SplashServices();
 
   @override
