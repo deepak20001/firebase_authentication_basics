@@ -29,6 +29,41 @@ class _SignupScreenState extends State<SignupScreen> {
     passwordController.dispose();
   }
 
+  // creating email password signup + handling error here
+  void Signup() {
+    if (_formKey.currentState!.validate()) {
+      // handling loading here
+      setState(() {
+        loading = true;
+      });
+      _auth
+          .createUserWithEmailAndPassword(
+        email: emailController.text.toString(),
+        password: passwordController.text.toString(),
+      )
+          .then(
+        (value) {
+          // handling loading here
+          setState(
+            () {
+              loading = false;
+            },
+          );
+        },
+      ).onError(
+        (error, stackTrace) {
+          Utils().toastMessage(error.toString());
+          // handling loading here
+          setState(
+            () {
+              loading = false;
+            },
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,39 +125,8 @@ class _SignupScreenState extends State<SignupScreen> {
               title: "Sign up",
               loading: loading,
               onTap: () {
-                // log("tapped");
-                // creating email password signup + handling error here
-                if (_formKey.currentState!.validate()) {
-                  // handling loading here
-                  setState(() {
-                    loading = true;
-                  });
-                  _auth
-                      .createUserWithEmailAndPassword(
-                    email: emailController.text.toString(),
-                    password: passwordController.text.toString(),
-                  )
-                      .then(
-                    (value) {
-                      // handling loading here
-                      setState(
-                        () {
-                          loading = false;
-                        },
-                      );
-                    },
-                  ).onError(
-                    (error, stackTrace) {
-                      Utils().toastMessage(error.toString());
-                      // handling loading here
-                      setState(
-                        () {
-                          loading = false;
-                        },
-                      );
-                    },
-                  );
-                }
+                // accessing login function here which manages firebase authentication
+                Signup();
               },
             ),
             SizedBox(
