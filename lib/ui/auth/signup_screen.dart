@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -15,6 +15,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  // using firebase auth package for authentication of sign up page
+  // here by authentication we creating firebase instance or initialise it and this firebase_auth package giving us exposure of this api
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -83,7 +87,12 @@ class _SignupScreenState extends State<SignupScreen> {
             ElevatedButton(
               onPressed: () {
                 // log("tapped");
-                if (_formKey.currentState!.validate()) {}
+                if (_formKey.currentState!.validate()) {
+                  _auth.createUserWithEmailAndPassword(
+                    email: emailController.text.toString(),
+                    password: passwordController.text.toString(),
+                  );
+                }
               },
               child: Text("Sign up"),
               style: ElevatedButton.styleFrom(
