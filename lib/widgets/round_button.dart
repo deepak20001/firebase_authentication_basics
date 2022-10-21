@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 class RoundButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
-  const RoundButton({
+  final bool loading;
+
+  RoundButton({
     Key? key,
     required this.title,
     required this.onTap,
+    this.loading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: onTap,
       child: Container(
         height: 50,
         decoration: BoxDecoration(
@@ -21,10 +24,14 @@ class RoundButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: Text(
-            title,
-            style: TextStyle(color: Colors.white),
-          ),
+          child: loading
+              ? CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : Text(
+                  title,
+                  style: TextStyle(color: Colors.white),
+                ),
         ),
       ),
     );

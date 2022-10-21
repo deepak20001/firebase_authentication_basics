@@ -1,4 +1,5 @@
 import 'package:authentication_firebase/ui/auth/signup_screen.dart';
+import 'package:authentication_firebase/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -87,15 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 40,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // log("tapped");
+              RoundButton(
+                title: "Login",
+                onTap: () {
                   if (_formKey.currentState!.validate()) {}
                 },
-                child: Text("Login"),
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(380, 50),
-                ),
               ),
               SizedBox(
                 height: 10,

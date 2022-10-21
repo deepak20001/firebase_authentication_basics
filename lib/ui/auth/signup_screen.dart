@@ -1,3 +1,4 @@
+import 'package:authentication_firebase/widgets/round_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../utils/utils.dart';
@@ -11,9 +12,9 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  bool loading = false;
   // added a form key to manage textform fields should not remain empty
   final _formKey = GlobalKey<FormState>();
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -85,26 +86,44 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: 40,
             ),
-            ElevatedButton(
-              onPressed: () {
+            RoundButton(
+              title: "Sign up",
+              loading: loading,
+              onTap: () {
                 // log("tapped");
                 // creating email password signup + handling error here
                 if (_formKey.currentState!.validate()) {
+                  // handling loading here
+                  setState(() {
+                    loading = true;
+                  });
                   _auth
                       .createUserWithEmailAndPassword(
-                        email: emailController.text.toString(),
-                        password: passwordController.text.toString(),
-                      )
-                      .then((value) {})
-                      .onError((error, stackTrace) {
-                    Utils().toastMessage(error.toString());
-                  });
+                    email: emailController.text.toString(),
+                    password: passwordController.text.toString(),
+                  )
+                      .then(
+                    (value) {
+                      // handling loading here
+                      setState(
+                        () {
+                          loading = false;
+                        },
+                      );
+                    },
+                  ).onError(
+                    (error, stackTrace) {
+                      Utils().toastMessage(error.toString());
+                      // handling loading here
+                      setState(
+                        () {
+                          loading = false;
+                        },
+                      );
+                    },
+                  );
                 }
               },
-              child: Text("Sign up"),
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(380, 50),
-              ),
             ),
             SizedBox(
               height: 10,
