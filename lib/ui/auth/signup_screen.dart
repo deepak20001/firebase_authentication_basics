@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../utils/utils.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -87,11 +88,17 @@ class _SignupScreenState extends State<SignupScreen> {
             ElevatedButton(
               onPressed: () {
                 // log("tapped");
+                // creating email password signup + handling error here
                 if (_formKey.currentState!.validate()) {
-                  _auth.createUserWithEmailAndPassword(
-                    email: emailController.text.toString(),
-                    password: passwordController.text.toString(),
-                  );
+                  _auth
+                      .createUserWithEmailAndPassword(
+                        email: emailController.text.toString(),
+                        password: passwordController.text.toString(),
+                      )
+                      .then((value) {})
+                      .onError((error, stackTrace) {
+                    Utils().toastMessage(error.toString());
+                  });
                 }
               },
               child: Text("Sign up"),
