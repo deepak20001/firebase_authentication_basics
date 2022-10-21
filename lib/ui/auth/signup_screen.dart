@@ -1,14 +1,15 @@
-import 'package:authentication_firebase/ui/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+import 'login_screen.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   // added a form key to manage textform fields should not remain empty
   final _formKey = GlobalKey<FormState>();
 
@@ -27,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Login"),
-        automaticallyImplyLeading: false,
+        title: Text("Sign up"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // log("tapped");
                 if (_formKey.currentState!.validate()) {}
               },
-              child: Text("Login"),
+              child: Text("Sign up"),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(380, 50),
               ),
@@ -96,17 +96,17 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account ?"),
+                Text("Already have an account ?"),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignupScreen(),
+                        builder: (context) => LoginScreen(),
                       ),
                     );
                   },
-                  child: Text("Sign up"),
+                  child: Text("Login"),
                 ),
               ],
             ),
