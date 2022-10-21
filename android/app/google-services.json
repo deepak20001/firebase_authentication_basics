@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1017247837625",
+    "project_id": "authentication-page-ca2bd",
+    "storage_bucket": "authentication-page-ca2bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017247837625:android:b2eb0edbacbe9d0b3dda68",
+        "android_client_info": {
+          "package_name": "com.example.authentication_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017247837625-9h4kqpei0nfjr9787dd72iss5kjksg8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTWy3i7VC-9F1_MholUeNL4GfntTSqGxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017247837625-9h4kqpei0nfjr9787dd72iss5kjksg8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
