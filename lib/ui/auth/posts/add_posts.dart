@@ -2,6 +2,8 @@ import 'package:authentication_firebase/widgets/round_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import '../../../utils/utils.dart';
+
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
 
@@ -37,9 +39,27 @@ class _AddPostScreenState extends State<AddPostScreen> {
             SizedBox(height: 30),
             RoundButton(
                 title: "Add",
+                loading: loading,
                 onTap: () {
-                  databaseRef.child("1").set({
-                    "title": postController.text.toString(),
+                  setState(() {
+                    loading = true;
+                  });
+                  // used DateTime.now().millisecondsSinceEpoch.toString() in child as we want the id's to be different
+                  databaseRef
+                      .child(DateTime.now().millisecondsSinceEpoch.toString())
+                      .set({
+                    "Desc": postController.text.toString(),
+                    "About": 1,
+                  }).then((value) {
+                    Utils().toastMessage("Post Added");
+                    setState(() {
+                      loading = false;
+                    });
+                  }).onError((error, stackTrace) {
+                    Utils().toastMessage(error.toString());
+                    setState(() {
+                      loading = false;
+                    });
                   });
                 }),
           ],
