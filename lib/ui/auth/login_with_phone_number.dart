@@ -1,5 +1,9 @@
+import 'package:authentication_firebase/ui/auth/verify_code.dart';
 import 'package:authentication_firebase/widgets/round_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/utils.dart';
 
 class LoginWithPhoneNumber extends StatefulWidget {
   const LoginWithPhoneNumber({super.key});
@@ -10,6 +14,8 @@ class LoginWithPhoneNumber extends StatefulWidget {
 
 class _LoginWithPhoneNumberState extends State<LoginWithPhoneNumber> {
   TextEditingController phoneNumberController = TextEditingController();
+  bool loading = false;
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,29 @@ class _LoginWithPhoneNumberState extends State<LoginWithPhoneNumber> {
             SizedBox(height: 80),
             RoundButton(
               title: "Login",
-              onTap: () {},
+              onTap: () {
+                auth.verifyPhoneNumber(
+                    phoneNumber: phoneNumberController.text,
+                    verificationCompleted: (_) {},
+                    verificationFailed: (e) {
+                      Utils().toastMessage(e.toString());
+                    },
+                    // this is imp => Verification id and token will be sent by the firebase
+                    // token can't be null
+                    codeSent: (String verificationId, int? token) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VerifyCodeScreen(
+                            verificationId: verificationId,
+                          ),
+                        ),
+                      );
+                    },
+                    codeAutoRetrievalTimeout: (e) {
+                      Utils().toastMessage(e.toString());
+                    });
+              },
             ),
           ],
         ),

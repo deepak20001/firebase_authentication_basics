@@ -1,7 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
-  const VerifyCodeScreen({super.key});
+  // this id we will get from the LoginWithPhoneNumber screen
+  final String verificationId;
+  const VerifyCodeScreen({
+    Key? key,
+    required this.verificationId,
+  }) : super(key: key);
 
   @override
   State<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
