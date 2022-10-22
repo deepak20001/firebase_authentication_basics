@@ -41,26 +41,18 @@ class _SignupScreenState extends State<SignupScreen> {
         email: emailController.text.toString(),
         password: passwordController.text.toString(),
       )
-          .then(
-        (value) {
-          // handling loading here
-          setState(
-            () {
-              loading = false;
-            },
-          );
-        },
-      ).onError(
-        (error, stackTrace) {
-          Utils().toastMessage(error.toString());
-          // handling loading here
-          setState(
-            () {
-              loading = false;
-            },
-          );
-        },
-      );
+          .then((value) {
+        // handling loading here
+        setState(() {
+          loading = false;
+        });
+      }).onError((error, stackTrace) {
+        Utils().toastMessage(error.toString());
+        // handling loading here
+        setState(() {
+          loading = false;
+        });
+      });
     }
   }
 

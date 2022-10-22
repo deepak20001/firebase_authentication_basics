@@ -1,5 +1,8 @@
 import 'package:authentication_firebase/ui/auth/signup_screen.dart';
+import 'package:authentication_firebase/utils/utils.dart';
 import 'package:authentication_firebase/widgets/round_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,11 +20,30 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void dispose() {
     // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  // added check login function
+  void login() {
+    _auth
+        .signInWithEmailAndPassword(
+      email: emailController.text.toString(),
+      password: passwordController.text.toString(),
+    )
+        .then((value) {
+      // here we can get the value on screen we want using Utils class if the above fn runs successfully
+      Utils().toastMessage(value.user!.email.toString());
+    }).onError((error, stackTrace) {
+      // direct print statement makes app slow so use debugPrint
+      debugPrint(error.toString());
+      Utils().toastMessage(error.toString());
+    });
   }
 
   @override
@@ -91,7 +113,10 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundButton(
                 title: "Login",
                 onTap: () {
-                  if (_formKey.currentState!.validate()) {}
+                  if (_formKey.currentState!.validate()) {
+                    // login function created here
+                    login();
+                  }
                 },
               ),
               SizedBox(
