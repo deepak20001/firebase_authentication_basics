@@ -45,8 +45,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     loading = true;
                   });
                   // used DateTime.now().millisecondsSinceEpoch.toString() in child as we want the id's to be different
+                  // can add the subchild also 
                   databaseRef
                       .child(DateTime.now().millisecondsSinceEpoch.toString())
+                      .child("Comments")
                       .set({
                     "Desc": postController.text.toString(),
                     "About": 1,
