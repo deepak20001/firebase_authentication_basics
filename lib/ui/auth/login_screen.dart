@@ -1,4 +1,5 @@
-import 'package:authentication_firebase/ui/auth/signup_screen.dart';
+import '../auth/posts/post_screen.dart';
+import '../auth/signup_screen.dart';
 import 'package:authentication_firebase/utils/utils.dart';
 import 'package:authentication_firebase/widgets/round_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // loading var declared here
+  bool loading = false;
   // added a form key to manage textform fields should not remain empty
   final _formKey = GlobalKey<FormState>();
 
@@ -31,6 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // added check login function
   void login() {
+    setState(() {
+      loading = true;
+    });
     _auth
         .signInWithEmailAndPassword(
       email: emailController.text.toString(),
@@ -39,10 +45,21 @@ class _LoginScreenState extends State<LoginScreen> {
         .then((value) {
       // here we can get the value on screen we want using Utils class if the above fn runs successfully
       Utils().toastMessage(value.user!.email.toString());
+      // now moving to post screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PostScreen(),
+        ),
+      );
+      setState(() {
+        loading = false;
+      });
     }).onError((error, stackTrace) {
       // direct print statement makes app slow so use debugPrint
       debugPrint(error.toString());
       Utils().toastMessage(error.toString());
+      loading = false;
     });
   }
 
@@ -112,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundButton(
                 title: "Login",
+                loading: loading,
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     // login function created here

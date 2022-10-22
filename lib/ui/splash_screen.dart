@@ -9,12 +9,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // accessing the periodic timer function 
+  // accessing the periodic timer function
   SplashServices splashScreen = SplashServices();
 
   @override
   void initState() {
     // TODO: implement initState
+    // by providing splashScreen here if the user agan opens app he won't need to log in again if he already have logged in
     splashScreen.isLogin(context);
     super.initState();
   }
