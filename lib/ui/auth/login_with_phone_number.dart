@@ -30,16 +30,28 @@ class _LoginWithPhoneNumberState extends State<LoginWithPhoneNumber> {
             SizedBox(height: 80),
             TextFormField(
               controller: phoneNumberController,
-              decoration: InputDecoration(hintText: "+1 234 567 890"),
+              // keyboardType: TextInputType.number,
+              decoration: InputDecoration(hintText: "+91 123 456 7901"),
             ),
             SizedBox(height: 80),
             RoundButton(
               title: "Login",
+              loading: loading,
               onTap: () {
+                setState(() {
+                  loading = true;
+                });
                 auth.verifyPhoneNumber(
                     phoneNumber: phoneNumberController.text,
-                    verificationCompleted: (_) {},
+                    verificationCompleted: (_) {
+                      setState(() {
+                        loading = false;
+                      });
+                    },
                     verificationFailed: (e) {
+                      setState(() {
+                        loading = false;
+                      });
                       Utils().toastMessage(e.toString());
                     },
                     // this is imp => Verification id and token will be sent by the firebase
@@ -53,9 +65,15 @@ class _LoginWithPhoneNumberState extends State<LoginWithPhoneNumber> {
                           ),
                         ),
                       );
+                      setState(() {
+                        loading = false;
+                      });
                     },
                     codeAutoRetrievalTimeout: (e) {
                       Utils().toastMessage(e.toString());
+                      setState(() {
+                        loading = false;
+                      });
                     });
               },
             ),
