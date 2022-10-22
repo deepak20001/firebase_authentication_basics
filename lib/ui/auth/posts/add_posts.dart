@@ -1,4 +1,5 @@
 import 'package:authentication_firebase/widgets/round_button.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -9,6 +10,11 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  bool loading = false;
+  final postController = TextEditingController();
+  // created firebase database instance here after that a reference created named Post and this then forms a table/node whenever we will take this ref. a node will be created
+  final databaseRef = FirebaseDatabase.instance.ref("Post");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +27,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           children: [
             SizedBox(height: 30),
             TextFormField(
+              controller: postController,
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: "What's in your mind?",
@@ -28,7 +35,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
             ),
             SizedBox(height: 30),
-            RoundButton(title: "Add", onTap: () {}),
+            RoundButton(
+                title: "Add",
+                onTap: () {
+                  databaseRef.child("1").set({
+                    "title": postController.text.toString(),
+                  });
+                }),
           ],
         ),
       ),
