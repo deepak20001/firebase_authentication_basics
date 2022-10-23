@@ -45,7 +45,7 @@ class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
                     loading = true;
                   });
                   String id = DateTime.now().millisecondsSinceEpoch.toString();
-                  fireStore.doc().set({
+                  fireStore.doc(id).set({
                     "title": postController.text.toString(),
                     "id": id,
                   }).then((value) {
@@ -58,6 +58,9 @@ class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
                     setState(() {
                       loading = false;
                     });
+                  });
+                  setState(() {
+                    postController.clear();
                   });
                 }),
           ],

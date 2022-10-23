@@ -20,6 +20,8 @@ class _FireStoreScreenState extends State<FireStoreScreen> {
   final editController = TextEditingController();
   // here snapshot asks for querysnapshot which we give it at Streambuilder
   final fireStore = FirebaseFirestore.instance.collection("users").snapshots();
+  // creating collection as in add_firestore_data we get the data using collection but here we are getting snapshot so first we have to convert doc to get the collection reference
+  CollectionReference ref = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {
@@ -48,36 +50,6 @@ class _FireStoreScreenState extends State<FireStoreScreen> {
           SizedBox(
             height: 10,
           ),
-
-/*******************************************************************************************************/
-          // Expanded(
-          //   child: StreamBuilder(
-          //     stream: ref.onValue,
-          //     builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-          //       // accessing the content of table using map
-          //       Map<dynamic, dynamic> map =
-          //           snapshot.data!.snapshot.value as dynamic;
-          //       List<dynamic> list = [];
-          //       list.clear();
-          //       list = map.values.toList();
-
-          //       if (!snapshot.hasData) {
-          //         return CircularProgressIndicator();
-          //       } else {
-          //         return ListView.builder(
-          //           itemCount: snapshot.data!.snapshot.children.length,
-          //           itemBuilder: (context, index) {
-          //             return ListTile(
-          //               title: Text(list[index]["title"]),
-          //             );
-          //           },
-          //         );
-          //       }
-          //     },
-          //   ),
-          // ),
-
-/*******************************************************************************************************/
           StreamBuilder<QuerySnapshot>(
             stream: fireStore,
             builder:
@@ -97,6 +69,40 @@ class _FireStoreScreenState extends State<FireStoreScreen> {
                           Text(snapshot.data!.docs[index]["title"].toString()),
                       subtitle:
                           Text(snapshot.data!.docs[index]["id"].toString()),
+                      trailing: PopupMenuButton(
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.pop(context);
+                                showMyDialog(
+                                  snapshot.data!.docs[index]["title"]
+                                      .toString(),
+                                  snapshot.data!.docs[index]["id"].toString(),
+                                );
+                              },
+                              leading: Icon(Icons.edit),
+                              title: Text("Edit"),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 1,
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.pop(context);
+                                ref
+                                    .doc(snapshot.data!.docs[index]["id"]
+                                        .toString())
+                                    .delete();
+                              },
+                              leading: Icon(Icons.delete_outline),
+                              title: Text("Delete"),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -144,7 +150,16 @@ class _FireStoreScreenState extends State<FireStoreScreen> {
             ),
             TextButton(
               onPressed: () {
+                // debugPrint(editController.text);
                 Navigator.pop(context);
+
+                ref
+                    .doc(id)
+                    .update({"title": editController.text}).then((value) {
+                  Utils().toastMessage("Updated");
+                }).onError((error, stackTrace) {
+                  Utils().toastMessage(error.toString());
+                });
               },
               child: Text("Update"),
             ),
