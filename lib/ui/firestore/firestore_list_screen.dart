@@ -1,5 +1,6 @@
 import 'package:authentication_firebase/ui/auth/posts/add_posts.dart';
 import 'package:authentication_firebase/ui/firestore/add_firestore_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -17,6 +18,8 @@ class FireStoreScreen extends StatefulWidget {
 class _FireStoreScreenState extends State<FireStoreScreen> {
   final auth = FirebaseAuth.instance;
   final editController = TextEditingController();
+  // here snapshot asks for querysnapshot which we give it at Streambuilder
+  final fireStore = FirebaseFirestore.instance.collection("users").snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +78,30 @@ class _FireStoreScreenState extends State<FireStoreScreen> {
           // ),
 
 /*******************************************************************************************************/
-          Expanded(
-            child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text("aatsfd"),
-                  );
-                }),
+          StreamBuilder<QuerySnapshot>(
+            stream: fireStore,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Text("Some Error");
+              }
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title:
+                          Text(snapshot.data!.docs[index]["title"].toString()),
+                      subtitle:
+                          Text(snapshot.data!.docs[index]["id"].toString()),
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),
