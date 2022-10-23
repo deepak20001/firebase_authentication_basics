@@ -15,7 +15,7 @@ class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
   bool loading = false;
   final postController = TextEditingController();
   // accessing the instance of firestore from here
-  final fireStore = FirebaseFirestore.instance.collection("Jemsy");
+  final fireStore = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {
