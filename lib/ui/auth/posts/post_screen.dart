@@ -40,6 +40,34 @@ class _PostScreenState extends State<PostScreen> {
       ),
       body: Column(
         children: [
+/*******************************************************************************************************/
+          Expanded(
+            child: StreamBuilder(
+              stream: ref.onValue,
+              builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                // accessing the content of table using map
+                Map<dynamic, dynamic> map =
+                    snapshot.data!.snapshot.value as dynamic;
+                List<dynamic> list = [];
+                list.clear();
+                list = map.values.toList();
+
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.snapshot.children.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(list[index]["title"]),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+/*******************************************************************************************************/
           Expanded(
             // automatically handles the animation stuff of firebase
             child: FirebaseAnimatedList(
