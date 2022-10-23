@@ -123,10 +123,9 @@ class _PostScreenState extends State<PostScreen> {
                           child: ListTile(
                             onTap: () {
                               Navigator.pop(context);
-                              showMyDialog(
-                                title,
-                                snapshot.child("id").value.toString(),
-                              );
+                              ref
+                                  .child(snapshot.child("id").value.toString())
+                                  .remove();
                             },
                             leading: Icon(Icons.delete_outline),
                             title: Text("Delete"),
