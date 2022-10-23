@@ -3,6 +3,7 @@ import 'package:authentication_firebase/ui/auth/posts/post_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../ui/auth/login_screen.dart';
+import '../ui/firestore/firestore_list_screen.dart';
 
 class SplashServices {
   void isLogin(BuildContext context) {
@@ -18,7 +19,7 @@ class SplashServices {
         () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PostScreen(),
+            builder: (context) => FireStoreScreen(),
           ),
         ),
       );

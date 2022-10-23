@@ -1,26 +1,27 @@
-import 'package:authentication_firebase/widgets/round_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/utils.dart';
+import '../../utils/utils.dart';
+import '../../widgets/round_button.dart';
 
-class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
+class AddFirestoreDataScreen extends StatefulWidget {
+  const AddFirestoreDataScreen({super.key});
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  State<AddFirestoreDataScreen> createState() => _AddFirestoreDataScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen> {
+class _AddFirestoreDataScreenState extends State<AddFirestoreDataScreen> {
   bool loading = false;
   final postController = TextEditingController();
-  // created firebase database instance here after that a reference created named Post and this then forms a table/node whenever we will take this ref. a node will be created
-  final databaseRef = FirebaseDatabase.instance.ref("Post");
+  // accessing the instance of firestore from here
+  final fireStore = FirebaseFirestore.instance.collection("Jemsy");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Posts"),
+        title: Text("Add Firestore Data"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -43,15 +44,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   setState(() {
                     loading = true;
                   });
-                  // used DateTime.now().millisecondsSinceEpoch.toString() in child as we want the id's to be different
-                  // can add the subchild also
                   String id = DateTime.now().millisecondsSinceEpoch.toString();
-
-                  databaseRef.child(id).set({
+                  fireStore.doc().set({
                     "title": postController.text.toString(),
                     "id": id,
                   }).then((value) {
-                    Utils().toastMessage("Post Added");
+                    Utils().toastMessage("Added post");
                     setState(() {
                       loading = false;
                     });
@@ -60,10 +58,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     setState(() {
                       loading = false;
                     });
-                  });
-
-                  setState(() {
-                    postController.clear();
                   });
                 }),
           ],
