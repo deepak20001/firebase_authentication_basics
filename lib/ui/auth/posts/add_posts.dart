@@ -46,11 +46,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   });
                   // used DateTime.now().millisecondsSinceEpoch.toString() in child as we want the id's to be different
                   // can add the subchild also
-                  databaseRef
-                      .child(DateTime.now().millisecondsSinceEpoch.toString())
-                      .set({
+                  String id = DateTime.now().millisecondsSinceEpoch.toString();
+
+                  databaseRef.child(id).set({
                     "title": postController.text.toString(),
-                    "id": DateTime.now().millisecondsSinceEpoch.toString(),
+                    "id": id,
                   }).then((value) {
                     Utils().toastMessage("Post Added");
                     setState(() {
@@ -61,6 +61,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     setState(() {
                       loading = false;
                     });
+                  });
+
+                  setState(() {
+                    postController.clear();
                   });
                 }),
           ],
