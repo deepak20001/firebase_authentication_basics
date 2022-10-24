@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:authentication_firebase/ui/auth/posts/post_screen.dart';
+import 'package:authentication_firebase/ui/upload_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../ui/auth/login_screen.dart';
@@ -19,7 +20,7 @@ class SplashServices {
         () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FireStoreScreen(),
+            builder: (context) => UploadImageScreen(),
           ),
         ),
       );
